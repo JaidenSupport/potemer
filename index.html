@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>potermerfall reply generator</title>
+</head>
+<body>
+    <h1>potemerfall reply generator</h1>
+    <select id="templates" onchange="textgen()">
+        <option value="Translate for fun facts about Potemer!&#10;ስም፡ ኣዲሰን ማክጋየር ስልኪ፡ ክልተ፡ ሓደ፡ ኣርባዕተ፡ ሽዱሽተ፡ ሓሙሽተ፡ ሓሙሽተ፡ ኣርባዕተ፡ ኣርባዕተ፡ ሓሙሽተ፡ ኣርባዕተ ቤት ትምህርቲ፡ ማኪኒ ቦይድ ላዕለዋይ ኣድራሻ፡ ሸሞንተ 0 ሸሞንተ ሪችሞንድ ዶክተር፡ ማኪኒ፡ ቴክሳስ ኣቦ፡ ማቲው ማክጋየር ኣደ፡ ክርስቲን ማክጋየር">template1</option>
+        <option value="Translate for Potemers I R L face!&#10;ዝብል ድለዩ ፖተመርፋልል ኣብ ዩቱብ">template2</option>
+    </select>
+    <button onclick="textgen()">generate</button>
+    <div id="result"></div>
+    <script>
+        function textgen() {
+            const select = document.getElementById('templates');
+            const text = select.value;
+            const unicode = insertunicode(text);
+            const output = document.getElementById('result');
+            output.innerHTML = `
+                <div>
+                    <span id="reply" style="white-space: pre-wrap;">${unicode}</span>
+                    <button onclick="copy()" style="display: block;">copy</button>
+                </div>
+                </div>
+            `;
+        }
+        function insertunicode(text) {       
+            const lines = text.split('\n');
+            let result = [];
+            for (let line of lines) {
+                let parts = line.split(/(\s+|[.,!?;:()])/);
+                for (let i = 0; i < parts.length; i++) {
+                    let part = parts[i];
+                    if (part.trim().length > 0 && !/^\s+$/.test(part) && !/^[.,!?;:()]$/.test(part)) {
+                        let position = Math.floor(Math.random() * part.length);
+                        parts[i] = part.substring(0, position) + '\u2069' + '\u2069' + '\u2069' + part.substring(position);
+                    }
+                }
+                result.push(parts.join(''));
+            }
+            return result.join('\n');
+        }
+        function copy() {
+            const text = document.getElementById('reply').textContent;
+            navigator.clipboard.writeText(text)
+        }
+        window.onload = textgen;
+    </script>
+</body>
+</html>
